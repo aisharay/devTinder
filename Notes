@@ -1,0 +1,5 @@
+1. Added express server, installing express server, it added dependency to package.json
+2. Express : 4.19.2   4:Major 19:Minor 2: patch
+3. Package-lock.json : ^4.19.2 : means update it to any new version coming 4.X.X, What is ~4.19.2?
+4. We get exact version on package-lock, and supported version range in package.json
+5. Node src/app.js does not refreshes the server. Installed nodemon, Nodemon src/app.js would refresh the server automatiacally.
