@@ -2,14 +2,19 @@ console.log("Aisha, you can do it");
 
 
 const express = require("express");
-const app = express();  
+const app = express(); 
+const { authMiddleware } = require("./middlewares/auth"); 
 
-// app.use((req,res) => {
-//   res.send("Hello World");
-// });
+app.get("/user", (req, res) => {
+  res.send("Aisha");
+});
 
-app.use("/get", (req,res) => {
-  res.send("got it");
+app.post("/user", (req, res) => {
+  res.send("User saved");
+});
+
+app.use("/test", (req,res) => {
+  res.send("test result");
 });
 
 app.listen(3000, () => {
