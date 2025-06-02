@@ -1,5 +1,29 @@
+Class-1
 1. Added express server, installing express server, it added dependency to package.json
 2. Express : 4.19.2   4:Major 19:Minor 2: patch
 3. Package-lock.json : ^4.19.2 : means update it to any new version coming 4.X.X, What is ~4.19.2?
 4. We get exact version on package-lock, and supported version range in package.json
 5. Node src/app.js does not refreshes the server. Installed nodemon, Nodemon src/app.js would refresh the server automatiacally.
+
+Class-2
+6. Node js runs in tops to buttom order, If, it routes match first, it will not get below, it will return there.
+7. Get is the default call for apis, to use post/delete, use a software like postman
+8.           /ab?c = /abc , /ac (b is optional)
+            /ab+c = abbbbbbbbbbbbbbbc, abc
+            /ab*cd = /abkjhsdgfjhsgfdcd
+            /a(bc)?d   bc is optional  
+            There are many complex ways, use accordingly   
+
+Class-3
+9. MUltiple route handler, next()
+10. app.use("/route", rH, [rH2,rH3], rH4, rH5); All rH, who are not sending response are middlewares. We can use these middlewares to authorize.
+
+Class-4
+Adding a db to project, will use mongoose 
+correct way: first connect to DB, if it works successfully, start server.
+
+Class-5 
+For API, validate the req body -> encrypt password
+
+
+//how to add a swagger page
