@@ -24,6 +24,7 @@ correct way: first connect to DB, if it works successfully, start server.
 
 Class-5 
 For API, validate the req body -> encrypt password
+added signup n login API, validated API, and added error handling
 
 
 //how to add a swagger page
