@@ -9,6 +9,7 @@ const validateSignupData = require("./utils/validation");
 const bcrypt = require("bcrypt");
 const cookeParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
+const { connections } = require("mongoose");
 
 app.use(express.json());
 
@@ -67,7 +68,7 @@ app.post("/sendConnectionRequest", userAuth, async (req, res) => {
   res.send("Connection request sent");
 });
 
-app.post("/acceptConnectionRequest", userAuth, async (req, res) => {
+app.post("/request/send/interested/:userID", userAuth, async (req, res) => {
   const user = req.user;
   const { senderId } = req.body;
 
@@ -88,7 +89,7 @@ app.post("/acceptConnectionRequest", userAuth, async (req, res) => {
   res.send("Connection request accepted");
 });
 
-app.post("/declineConnectionRequest", userAuth, async (req, res) => {
+app.post("/request/send/ignored/:userID", userAuth, async (req, res) => {
   const user = req.user;
   const { senderId } = req.body;
 
@@ -109,6 +110,24 @@ app.post("/declineConnectionRequest", userAuth, async (req, res) => {
   res.send("Connection request declined");
 });
 
+app.get("/requests/received", userAuth, async (req, res) => {
+  const user = req.user;
+  const connections = await Connection.find({ recipient: user._id, status: "pending" });
+  res.send(connections);
+});
+
+app.get("/requests/sent", userAuth, async (req, res) => {
+  const user = req.user;
+  const connections = await Connection.find({ sender: user._id, status: "pending" });
+  res.send(connections);
+});
+
+app.get("/feed", userAuth, async (req, res) => {
+  const user = req.user;
+  const connections = await Connection.find({ $or: [{ sender: user._id }, { recipient: user._id }] });
+  res.send(connections);
+});
+
 connectDB()
   .then(() => {
     console.log("DB connected successfully.");
@@ -118,4 +137,5 @@ connectDB()
   })
   .catch((err) => {
     console.error("database connection failed");
-    process.exit(1);});
+    process.exit(1);
+  });
