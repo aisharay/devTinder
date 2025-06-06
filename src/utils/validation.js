@@ -17,4 +17,16 @@ const validateSignupData = (data) => {
     valid: Object.keys(errors).length === 0 ? true : false,
   };
 }
-export default validateSignupData;
+
+const validateProfileEditData = (data) => {
+  let errors = {};
+
+  const allowedEditFields = ['name',  'age'];
+
+  const isEditAllowed = Object.keys(data).every((field) =>
+    allowedEditFields.includes(field)
+  );
+
+  return isEditAllowed;
+}
+export default { validateProfileEditData, validateSignupData };
