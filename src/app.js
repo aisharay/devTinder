@@ -13,8 +13,8 @@ const { connections } = require("mongoose");
 
 const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
-const connectionRouter = require("./routes/connections");
 const userRouter = require("./routes/user");
+const connectionRequestRouter = require("./routes/connectionRequest");
 
 app.use(express.json());
 

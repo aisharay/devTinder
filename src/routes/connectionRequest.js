@@ -1,11 +1,12 @@
 const express = require('express');
 
-const connectionRouter = express.Router();
+const connectionRequestRouter = express.Router();
 
 const { userAuth } = require('../middlewares/auth');
 const User = require('../models/user'); 
+const ConnectionRequest = require('../models/connectionRequest');
 
-connectionRouter.post('/sendConnectionRequest', userAuth, async (req, res) => {
+connectionRequestRouter.post('/sendConnectionRequest', userAuth, async (req, res) => {
     const user = req.user;
     const { recipientId } = req.body;
 
@@ -17,13 +18,13 @@ connectionRouter.post('/sendConnectionRequest', userAuth, async (req, res) => {
     if (!recipient) return res.status(404).send('User not found');
 
     // Send connection request logic here
-    const connection = new Connection({ sender: user._id, recipient: recipientId , status: 'pending' });
-    connection.save();
+    const connectionRequest = new ConnectionRequest({ sender: user._id, recipient: recipientId , status: 'pending' });
+    connectionRequest.save();
 
     res.send('Connection request sent');
 });
 
-connectionRouter.post('/request/send/interested/:userID', userAuth, async (req, res) => {
+connectionRequestRouter.post('/request/send/interested/:userID', userAuth, async (req, res) => {
     const user = req.user;
     const { senderId } = req.body;
 
@@ -35,16 +36,16 @@ connectionRouter.post('/request/send/interested/:userID', userAuth, async (req, 
     if (!sender) return res.status(404).send('User not found');
 
     // Accept connection request logic here
-    const connection = await Connection.findOne({ sender: senderId, recipient: user._id });
-    if (!connection) return res.status(404).send('Connection request not found');
+    const connectionRequest = await ConnectionRequest.findOne({ sender: senderId, recipient: user._id });
+    if (!connectionRequest) return res.status(404).send('Connection request not found');
 
-    connection.status = 'accepted';
-    connection.save();
+    connectionRequest.status = 'accepted';
+    connectionRequest.save();
 
     res.send('Connection request accepted');
 }); 
 
-connectionRouter.post('/request/send/ignored/:userID', userAuth, async (req, res) => {
+connectionRequestRouter.post('/request/send/ignored/:userID', userAuth, async (req, res) => {
     const user = req.user;
     const { senderId } = req.body;
 
@@ -56,13 +57,13 @@ connectionRouter.post('/request/send/ignored/:userID', userAuth, async (req, res
     if (!sender) return res.status(404).send('User not found');
 
     // Decline connection request logic here
-    const connection = await Connection.findOne({ sender: senderId, recipient: user._id });
-    if (!connection) return res.status(404).send('Connection request not found');
+    const connectionRequest = await ConnectionRequest.findOne({ sender: senderId, recipient: user._id });
+    if (!connectionRequest) return res.status(404).send('Connection request not found');
 
-    connection.status = 'declined';
-    connection.save();
+    connectionRequest.status = 'declined';
+    connectionRequest.save();
 
     res.send('Connection request declined');
 });
 
-module.exports = connectionRouter;
+module.exports = connectionRequestRouter;
